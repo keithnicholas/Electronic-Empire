@@ -1,0 +1,82 @@
+#item-bar{
+    height: auto;
+    margin-left: 17em;
+}
+#main-content-itempage{
+    margin-bottom: 2em;
+    /* margin-right: 20em; */
+}
+#item-page-itemname{
+    /* margin: 1em 2em; */
+    margin-top:1em;
+    margin-left: 2em;
+    font-size:2em;
+}
+
+article#item-bar figure{
+    float:left;
+}
+article#item-bar figure img{
+    max-height: 640px;
+    max-width: 480px;
+    margin-left: 1em;
+}
+#description-itempage{
+    /* margin-left:1.5em; */
+    margin-right:2em;
+    height:20em;
+    width:37.5em;
+    background-color:#e7eff6;
+    overflow:hidden;
+}
+#price-itempage{
+    width:37.5em;
+    background-color:#e7eff6;
+}
+#container-description-price{
+    margin-left:0em;
+    margin-right:2em;
+    overflow:hidden;
+}
+
+#comment{
+    font-size: 1.5em;
+    margin-left: 2.5em;
+}
+.comment-template{
+    margin:2.5em;
+}
+.user-id{
+    background-color: #adcbe3;
+    margin-right:1em;
+    margin-left: 2em;
+    vertical-align:top;
+}
+.user-comment{
+    background-color: #e7eff6;
+    display:inline-block;
+    width:70%;
+}
+
+#ur-comment{
+    margin:2.5em;
+}
+
+#write-ur-comment{
+    font-size: 1.5em;
+    margin-left: 1em;
+}
+/* note:text starts at middle */
+#ur-comment input[type="textarea"]{
+    display: block;
+    margin-left: 2em;
+    width:74.5%;
+    padding:0;
+    height: 10em;
+}
+#ur-comment input[type="button"]{
+    position:relative;
+    float: right;
+    margin-right:23.5%;
+    font-size:1em;
+}

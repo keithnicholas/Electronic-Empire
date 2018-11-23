@@ -1,0 +1,11 @@
+.btn{
+    background-color: #ff8800;
+    padding: 1em 0.5em 1em 0.5em;
+    color:white;
+    display: inline;
+    float:right;
+    /* margin-left: 3em; */
+}
+.btn:hover{
+    background-color: red;
+}

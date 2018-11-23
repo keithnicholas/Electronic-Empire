@@ -1,0 +1,49 @@
+#item-bar{
+    margin-left: 17em;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 5.75em;
+}
+#add-item-form label{
+    border: none;
+    color: white;
+    padding: .125em 1em;
+    text-decoration: none;
+    font-size:1.25em;
+    display: block;
+    width:7.5em;
+    overflow: auto;
+
+}
+
+form[id="add-item-form"]{
+    display: flex;
+    flex-direction: column;
+}
+#item-bar input[type="text"],#item-bar input[type="number"]
+{
+    padding: .15em;
+}
+.entry-additem-form{
+    display: flex;
+    /* align-items: flex-start; */
+    align-items: baseline;
+    flex-direction: row;
+}
+
+.buttons-form-additem{
+    display: flex;
+    margin-left: 11.85em;
+
+}
+.buttons-form-additem button{
+    margin-top:1em;
+    padding: .125em 1em;
+    border-radius: 25px;
+    margin-right: 1em;
+    color:white;
+    font-size: 1.25em;
+    background-color: #4b86b4;
+    border: none;
+
+}

@@ -1,0 +1,70 @@
+#mainForm {
+    /* margin-top: 15em;
+    margin-left: auto;
+    margin-right: auto; */
+    width: 50%;
+    border: 1px solid #e3e3e3;
+    /* border-radius: 4px; */
+    border-radius: 15px;
+    /* background-color: #adcbe38a; */
+    background-color:#c2b9b0b0;
+    margin-top:15em;
+    margin-bottom: 6.5em;
+    padding-top:1em;
+    padding-bottom: 4.5em;
+}
+
+#login-text {
+    color: #2a4d69;
+    /* background-color: #4b86b4; */
+}
+
+label {
+    display: inline-block;
+    width: 40%;
+    text-align: right;
+}
+
+.button-form {
+    /* Green */
+
+    background-color: #4b86b4;
+    border: none;
+    /* color: black; */
+    color: white;
+    padding: .125em 1em;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.25em;
+    margin: auto;
+    display: block;
+    align-items: center;
+    margin-bottom: .5em;
+    width: 7.5em;
+    border-radius: 25px;
+}
+
+#forgot-password {
+    color: #ad4d69;
+}
+
+
+
+#sign-up {
+    display: block;
+    /* float:right; */
+}
+
+#form-container {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+
+}
+.form-invalid {
+    border-color: red;
+}
+
+form.submitted-blank input:invalid {
+    border-color: red;
+}

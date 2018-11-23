@@ -1,0 +1,53 @@
+#item-bar{
+    height: auto;
+    /* padding-bottom: 5.75em; */
+}
+#result-form{
+    display: flex;
+    flex-direction: column;
+    overflow-x:auto;
+}
+
+#result-form p{
+    border: none;
+    color: white;
+    padding: .125em 1em;
+    text-decoration: none;
+    font-size:1.25em;
+    display: block;
+    width:7.5em;
+    overflow: auto;
+
+}
+#result-form label{
+    border: none;
+    color: white;
+    padding: .125em 1em;
+    text-decoration: none;
+    font-size:1.25em;
+    display: block;
+}
+
+input[type="radio"]{
+    display: inline;
+    margin-left: 5em;
+    zoom:1.5;
+}
+input[name="done"]{
+    width:5em;
+    margin-left: 40em;
+    padding: .75em .75em;
+    font-size: 1em;
+}
+
+#item-bar input[type="search"],#item-bar input[type="button"]
+{
+    padding: .15em;
+}
+
+.comment-form{
+    overflow:auto;
+}
+.comment-template{
+    color:white;
+}

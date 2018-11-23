@@ -1,0 +1,41 @@
+footer{
+    display: flex;
+    flex-direction: column;
+    /* align-content: flex-end; */
+    background-color: #414159;
+    /* height: 6.25em; */
+    height:auto;
+    clear:left;
+    color:white;
+    margin-top:inherit;
+}
+
+#back-to-top{
+    display: block;
+    background-color: #414159;
+    text-decoration: none;
+    text-align: center;
+    height: auto;
+    font-size: 1.25em;
+    color:white;
+}
+.top-border{
+    border-top: 1pt solid orange;
+    margin-right: 2em;
+    margin-left: 2em;
+    display: flex;
+    flex-direction: column;
+}
+#about-us{
+    border-top: 1pt solid orange;
+    margin:1em 2em 0em 2em;
+    display: block;
+}
+#about-us p, #contact-us p, #copyright p{
+    margin:0em 3em;
+
+}
+#contact-us a{
+    text-decoration: none;
+    color:white;
+}

@@ -31,13 +31,14 @@
     flex-direction: column;
 }
 .entry-user-view input[value="edit"]{
+    background-color: #A6AB50;
     margin:0 2em;
     display: inline-block;
     align-items: baseline;
     padding: .125em 1em;
     color:white;
     font-size: .8em;
-    background-color: #4b86b4;
+    
     border: none;
 }
 .buttons-form-user{
@@ -51,6 +52,6 @@
     margin-right: 1em;
     color:white;
     font-size: 1.25em;
-    background-color: #4b86b4;
+    background-color: #A6AB50;
     border: none;
 }

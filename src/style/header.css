@@ -10,6 +10,8 @@
 
 #input-form {
     display: inline;
+    padding-top:.75em;
+    padding-bottom: 0.5em;
 }
 
 #header-div-2 {
@@ -28,8 +30,8 @@
     margin-left:3em;
 }
 
-#input-form input[type="button"] {
-    height: 2.5em;
+#input-form input[type="submit"] {
+    height: 3em;
     margin-top: 2px;
     /* margin-left: 1em; */
     /* margin-bottom: 0.5em; */
@@ -62,7 +64,8 @@
 }
 
 .navbar a {
-    padding-top:.5em;
+    padding-top:.75em;
+    padding-bottom: 0.5em;
     display: flex-inline;
     flex-direction: row;
 
@@ -73,6 +76,8 @@
     text-decoration: none;
     font-size: 1.25em;
     margin-left: 2em;
+    /* margin-top:auto;
+    margin-bottom: auto; */
 }
 
 .navbar a:hover {
@@ -85,4 +90,16 @@
     display: inline-flex;
     flex-direction: row-reverse;
     float:right;
+}
+
+.submit-search {
+  background-color: #414159;
+  color:white;
+  border-color: transparent;
+  font-size:1em;
+  text-align: center;
+}
+.submit-search:hover {
+  background: #f2f2f2;/*color changed*/
+  color: purple;
 }

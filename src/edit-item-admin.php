@@ -19,7 +19,7 @@
     <article id="item-bar">
         <h2>Edit Items</h2>
         <h3>Provide the item details on the following fields: </h3>
-        <form method=POST id="add-item-form">
+        <form method=POST id="add-item-form" action = "process-edit-item-admin.php">
             <p class="entry-additem-form">
                 <label>Name of the Item:</label>
                 <input type="text" class="additem-form" required name="item-name">
@@ -40,24 +40,7 @@
             </div>
         </form>
     </article>
-    <footer>
-        <div id="about-us">
-            <p>About Us</p>
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-        </div>
-        <div class="top-border">
-            <div id="contact-us">
-                <p>Contact Us</p>
-                <p>Email: <a href="#">aa@a.com</a></p>
-                <p>Tel: <a href="#">111.222.3333</a></p>
-            </div>
-        </div>
-        <div class="top-border" id="copyright">
-            <p>Copyright &copy; 2018 Project</p>
-        </div>
-    </footer>
+  <?php include 'include/footer.php' ?>
 </body>
 
 </html>

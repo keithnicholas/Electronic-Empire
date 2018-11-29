@@ -10,13 +10,15 @@
     <link rel="stylesheet" href="style/user-style.css">
 </head>
 
-<body>
-
+<body
   <?php include "include/header.php";
         include "include/catelogry-list.php";
         include "include/db_credentials.php";
+        include 'include/urldata.php';
   ?>
-
+  <?php
+    include "process-userview.php";
+  ?>
     <main>
         <article id="item-bar">
             <h2>User Profile</h2>
@@ -30,13 +32,16 @@
                     </label>
                 </p>
                 <p class="entry-user-view">
+                    <label>Username:</label>
+                    <label id="user-address"><?php echo ($usernameInfo); ?></label>
+                <p class="entry-user-view">
                     <label>User Address:</label>
-                    <label id="user-address">3333 University Way, Kelowna, BC V1V 1V7
+                    <label id="user-address"><?php echo($addressInfo); ?>
                     <input type="button"name="user-address" value="edit"/></label>
                 </p>
                 <p class="entry-user-view">
                     <label>Email:</label>
-                    <label id="user-email">aa@a.com<input type="button" name="user-email" value="edit"/></label>
+                    <label id="user-email"><?php echo($emailInfo); ?><input type="button" name="user-email" value="edit"/></label>
                 </p>
                 <p class="entry-user-view">
                     <label>Password:</label>
@@ -49,24 +54,7 @@
             </form>
         </article>
     </main>
-    <footer>
-        <div id="about-us">
-            <p>About Us</p>
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-        </div>
-        <div class="top-border">
-            <div id="contact-us">
-                <p>Contact Us</p>
-                <p>Email: <a href="#">aa@a.com</a></p>
-                <p>Tel: <a href="#">111.222.3333</a></p>
-            </div>
-        </div>
-        <div class="top-border" id="copyright">
-            <p>Copyright &copy; 2018 Project</p>
-        </div>
-    </footer>
+  <?php include 'include/footer.php' ?>
 </body>
 
 </html>

@@ -8,44 +8,34 @@
     <link rel="stylesheet" href="style/header.css">
     <link rel="stylesheet" href="style/footer.css">
     <link rel="stylesheet" href="style/form-style.css">
-
 </head>
 
 <body>
   <?php include "include/header.php";
         include "include/db_credentials.php";
+        if(!isset($_SESSION))
+          session_start();
   ?>
     <div id="form-container">
-        <form method="POST" id="mainForm">
+        <form method="POST" id="mainForm" action = "process-forgotpass.php">
 
             <!-- <legend><span id="login-text">Login</span></legend> -->
             <p id="login-text">Recover Password</p>
             <p>
                 <label>Email: </label><input type="text" required name="forgotpassField">
+                <?php
+                if(isset($_SESSION['error']['InvalidEmail'])){
+                    echo "<span class=\"text-error\">".$_SESSION['error']['InvalidEmail']."</span>";
+                    $_SESSION['error']['InvalidEmail'] = null;
+                }
+                ?>
             </p>
 
 
-            <button type="button" id="sign-in" class="button-form">Submit</button>
+            <button type="submit" id="sign-in" class="button-form">Submit</button>
         </form>
     </div>
-    <footer>
-        <div id="about-us">
-            <p>About Us</p>
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-        </div>
-        <div class="top-border">
-            <div id="contact-us">
-                <p>Contact Us</p>
-                <p>Email: <a href="#">aa@a.com</a></p>
-                <p>Tel: <a href="#">111.222.3333</a></p>
-            </div>
-        </div>
-        <div class="top-border" id="copyright">
-            <p>Copyright &copy; 2018 Project</p>
-        </div>
-    </footer>
+  <?php include 'include/footer.php' ?>
 </body>
 
 </html>

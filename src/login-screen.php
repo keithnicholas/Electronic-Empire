@@ -1,3 +1,12 @@
+<?php include "include/header.php";
+        include "include/db_credentials.php";
+        //if user already logged on and for some
+        //reason goes to this page. redirect back to mainpage
+        if(isset($_SESSION['username'])){
+            $urlRedict = $_SERVER["HTTP_REFERER"];
+            header("Location: ".URL.$urlRedict);
+        }
+  ?>
 <!DOCTYPE html>
 <html>
 
@@ -12,18 +21,19 @@
 </head>
 
 <body>
-  <?php include "include/header.php";
-        include "include/db_credentials.php";
-  ?>
 
     <div id="form-container">
-        <form method="POST" id="mainForm">
-
+        <form method="POST" id="mainForm" action="process-login.php">
 
             <p id="login-text">Login</p>
 
             <p>
-                <label>ID: </label><input type="text" name="nameField" required>
+                <label>User name: </label><input type="text" name="nameField" required><?php
+                if(isset($_SESSION['errorlogin'])){
+                    echo "<span class=\"text-error\">".$_SESSION['errorlogin']."</span>";
+                    $_SESSION['errorlogin'] = null;
+                }
+                ?>
             </p>
             <P>
                 <label>Password: </label><input type="password" name="passwordField" required>
@@ -31,28 +41,11 @@
             </P>
             <!-- <button type="button" class="button-form" id="reset-password">forgot password</button> -->
 
-            <button type="button" id="sign-in" class="button-form">Sign in</button>
-            <button type="button" id="sign-up" class="button-form">Sign up</button>
-            <p id="login-text"><a href="admin-main.php">Admin-Access Placeholder</a></p>
+            <button type="submit" id="sign-in" name="btn-signin" class="button-form">Sign in</button>
+            <button type="submit" id="sign-up" name ="btn-singup" class="button-form">Sign up</button>
+            <!-- <p id="login-text"><a href="admin-main.php">Admin-Access Placeholder</a></p> -->
         </form>
     </div>
-    <footer>
-        <div id="about-us">
-            <p>About Us</p>
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-        </div>
-        <div class="top-border">
-            <div id="contact-us">
-                <p>Contact Us</p>
-                <p>Email: <a href="#">aa@a.com</a></p>
-                <p>Tel: <a href="#">111.222.3333</a></p>
-            </div>
-        </div>
-        <div class="top-border" id="copyright">
-            <p>Copyright &copy; 2018 Project</p>
-        </div>
-    </footer>
+  <?php include 'include/footer.php' ?>
 </body>
 </html>

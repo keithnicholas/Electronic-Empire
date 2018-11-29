@@ -29,7 +29,7 @@
     display: inline-block;
     margin-left: 2em;
     font-size: 1.5em;
-    background-color: #6f9fd8;
+    background-color: #A6AB50;
     color:white;
 }
 #checkout-form label{
@@ -57,12 +57,12 @@
     display: flex;
     flex-direction: row;
 }
-button[value="Remove"]{
+button[value="remove"]{
     display: inline-block;
     height:2em;
     margin-top:1em;
     margin-left: 4em;
-    background-color: #6f9fd8;
+    background-color: #A6AB50;
     text-align: center;
     /* padding: .75em .75em; */
     color:white;
@@ -73,4 +73,23 @@ button[value="Remove"]{
      width: 5em;
      margin-top:1em;
      margin-left: -6em;
+ }
+ .shopping-cart{
+     color: #414159;
+ }
+ .entry h4, .entry p{
+    color: #414159;
+ }
+ #checkout-form label,#subtotal{
+    color: #414159;
+ }
+ .txt-item-notfound{
+    color: #414159;
+ }
+ .submit-update-button{
+     height:2.5em;
+     width:5em;
+     color:white;
+     margin-left:1em;
+     background-color: #A6AB50;
  }

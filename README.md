@@ -132,4 +132,3 @@ You are welcome to submit before the deadlines.  The milestones are in place to 
 This project is not intended to be a complex project (in terms of the content and number of pages) but is intended to provide the opportunity to develop and showcase your full-stack skills.  In the development of the project, focus on key functional objectives and work through them in a planned fashion.  A simple, functional and well organized side is acceptable as long as it contains the required functionality utilizing the appropriate technology.   Please review the functional requirements to ensure your design satisfies the requirements.
 
 You may request a project different than the online store. An alternate project must contain all the required components. The project may have a real-world sponsor, but that is not required. Your project must have the same deliverables as the standard project.
-# cosc360proj

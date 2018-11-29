@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-
 <head>
     <meta charset="utf-8">
     <title>MyAmazon Store 3.0-Item-List</title>
@@ -9,98 +8,78 @@
     <link rel="stylesheet" href="style/item-list-style.css">
     <link rel="stylesheet" href="style/footer.css">
 </head>
-
 <body>
-  <?php include "include/header.php";
+
+  <?php
+        //TODO: Fix itemlist so that if user click category list it will just search item in that category, else search all item with SQL LIKE
+        include "include/header.php";
         include "include/catelogry-list.php";
         include "include/db_credentials.php";
+
+        $con = mysqli_connect($host, $db_user, $db_pw, $database);
+        if(mysqli_connect_errno()){ //if cannot connect
+            exit("<p>cannot connect to DB: ".mysqli_connect_error.'</p>');
+        }
+        $category =$key = NULL;
+
+        if(isset($_GET['category'])){//receive category from category list
+            $category = $_GET['category'];
+            //image path, pname, description, price
+          $sql = "SELECT pid, pname, description, price, p_img_path FROM Product WHERE category = ?";
+          $stmt = mysqli_prepare($con, $sql);
+          if(!$stmt) exit("fail to select");
+          else {
+            mysqli_stmt_bind_param($stmt, 's', $category);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $pid, $pname, $desc, $price, $p_img_path);
+
+            echo("<main><div id=\"mainContent\"><h2 id=\"item-type\">".$category."</h2>");
+            while(mysqli_stmt_fetch($stmt)) {
+              echo("<div class = \"entry\"><figure>
+              <a href=item-page.php?pid=".$pid."><img src=\"".$p_img_path."\"alt=product></a>
+              </figure>");
+              echo("<div class = \"item-info\"><p>".$pname.
+              "</p><p>".$desc."</p><p>$".$price."</p></div>");//product info
+              echo("<button type=\"button\" class = \"btn\">Add to Cart</button></div>");
+            }
+            echo("</div></main>");
+          }
+          mysqli_stmt_free_result($stmt);
+          mysqli_stmt_close($stmt);
+        }//end isset(category)
+        else if(!empty(($_GET['search_query']))) {
+
+          $key = $_GET['search_query'];
+          $sql = "SELECT * FROM Product
+          WHERE category LIKE '%".$key."%' OR description LIKE '%".$key."%' OR pname LIKE '%".$key."%'";
+
+          if($stmt = mysqli_query($con, $sql)) {
+            while($row = mysqli_fetch_row($stmt)) {
+              echo("<div class = \"entry\"><figure>
+              <a href=item-page.php?pid=".$row[0]."><img src= \"".$row[6]."\" alt=product></a>
+              </figure>");
+              echo("<div class = \"item-info\"><p>".$row[1].
+              "</p><p>".$row[2]."</p><p>$".$row[3]."</p></div>");//product info
+              echo("<button type=\"button\" class = \"btn\">Add to Cart</button></div>");
+            }
+          }
+        }//end isset(serach_query)
+        else {
+          $sql = "SELECT * FROM Product";
+          echo("<main><div id=\"mainContent\">");
+          if($stmt = mysqli_query($con, $sql)) {
+            while($row = mysqli_fetch_row($stmt)) {
+              echo("<div class = \"entry\"><figure>
+              <a href=item-page.php?pid=".$row[0]."><img src= \"".$row[6]."\" alt=product></a>
+              </figure>");
+              echo("<div class = \"item-info\"><p>".$row[1].
+              "</p><p>".$row[2]."</p><p>$".$row[3]."</p></div>");//product info
+              echo("<button type=\"button\" class = \"btn\">Add to Cart</button></div>");
+            }
+          }
+        }
+        mysqli_close($con);
   ?>
-
-    <main>
-        <div id="mainContent">
-            <h2 id="item-type">Automotive</h2>
-            <div class="entry">
-                <figure>
-                    <a href="item-page.php"><img src="images/example-mazda3.jpg" alt="item1"></a>
-                </figure>
-                <div class="item-info">
-                    <p>All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</p>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <p>$100,000</p>
-                </div>
-                <button type="button" class="btn">Add to Cart</button>
-            </div>
-
-            <div class="entry">
-                <figure>
-                    <a href="item-page.php"><img src="images/tiny.jpg" alt="item2"></a>
-                </figure>
-                <div class="item-info">
-                    <p>All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</p>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <p>$100,000</p>
-                </div>
-                <button type="button" class="btn">Add to Cart</button>
-            </div>
-
-            <div class="entry">
-                <figure>
-                    <a href="item-page.php"><img src="images/tiny.jpg" alt="item3"></a>
-                </figure>
-                <div class="item-info">
-                    <p>All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</p>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <p>$100,000</p>
-                </div>
-                <button type="button" class="btn">Add to Cart</button>
-            </div>
-
-            <div class="entry">
-                <figure>
-                    <a href="item-page.php"><img src="images/tiny.jpg" alt="item3"></a>
-                </figure>
-                <div class="item-info">
-                    <p>All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</p>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <p>$100,000</p>
-                </div>
-                <button type="button" class="btn">Add to Cart</button>
-            </div>
-
-            <div class="entry">
-                <figure>
-                    <a href="item-page.php"><img src="images/tiny.jpg" alt="item3"></a>
-                </figure>
-                <div class="item-info">
-                    <p>All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</p>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <p>$100,000</p>
-                </div>
-                <button type="button" class="btn">Add to Cart</button>
-            </div>
-
-        </div>
-    </main>
-
-    <footer>
-        <a href="#top" id="back-to-top">Back to Top</a>
-        <div id="about-us">
-            <p>About Us</p>
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-        </div>
-        <div class="top-border">
-            <div id="contact-us">
-                <p>Contact Us</p>
-                <p>Email: <a href="#">aa@a.com</a></p>
-                <p>Tel: <a href="#">111.222.3333</a></p>
-            </div>
-        </div>
-        <div class="top-border" id="copyright">
-            <p>Copyright &copy; 2018 Project</p>
-        </div>
-    </footer>
+  <?php include 'include/footer.php' ?>
 </body>
-
 </html>

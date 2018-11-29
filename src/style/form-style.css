@@ -27,8 +27,8 @@ label {
 
 .button-form {
     /* Green */
-
-    background-color: #4b86b4;
+    background-color: #A6AB50;
+    /* background-color: #4b86b4; */
     border: none;
     /* color: black; */
     color: white;
@@ -61,10 +61,13 @@ label {
     justify-content: center;
 
 }
+
 .form-invalid {
     border-color: red;
 }
-
+.text-error{
+    color:#bb0000;
+}
 form.submitted-blank input:invalid {
     border-color: red;
 }

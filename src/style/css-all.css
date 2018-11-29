@@ -53,7 +53,8 @@ h1, h2,h3,nav,footer{
 .btn-item-page{
     clear: left;
     display: block;
-    background-color: #6f9fd8;
+    /* background-color: #6f9fd8; */
+    background-color: #A6AB50;
     padding: .75em .75em;
     color:white;
     display:block;
@@ -67,4 +68,10 @@ h1, h2,h3,nav,footer{
     list-style: none;
     margin-top:.5em;
     margin-right: .25em;
+}
+
+.product-not-found-text{
+  margin-left:auto;
+  margin-right:auto;
+  color: white;
 }

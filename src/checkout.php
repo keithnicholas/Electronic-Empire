@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="style/header.css">
     <link rel="stylesheet" href="style/footer.css">
     <link rel="stylesheet" href="style/checkout-style.css">
-    <script type="text/javascript" src="js/checkout.js"></script>
-    <script src = "http://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src = "js/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+    <script type="text/javascript" src="js/checkout-quantity.js"></script>
+    
 </head>
 
 <body>
@@ -22,108 +24,72 @@
     <main>
         <div id="item-bar">
 
-            <h3>ShoppingCart</h3>
+            <h3 class="shopping-cart">Shopping Cart</h3>
+            <?php
+              $username = NULL;
+              if(isset($_SESSION['username'])) {
+                $username = $_SESSION['username'];
+              }
+              $con = mysqli_connect($host, $db_user, $db_pw, $database);
+              if(mysqli_connect_errno()){ //if cannot connect
+                  exit("<p>cannot connect to DB: ".mysqli_connect_error.'</p>');
+              }
+              $sql = "SELECT Product.pid, Product.p_img_path, pname, description, price, total_number
+              FROM Product LEFT JOIN Cart USING(pid)
+              WHERE username = ?";
+              $stmt = mysqli_prepare($con, $sql);
+              mysqli_stmt_bind_param($stmt, "s", $username);
+              mysqli_stmt_execute($stmt);
+              mysqli_stmt_bind_result($stmt, $pid, $path, $pname, $description, $price, $total_number);
+              //retrieving products from cart for the user
+              while(mysqli_stmt_fetch($stmt)) {
+                echo("");
+                echo("<div class = \"entry\"><figure><a href=\"item-page.php?pid=".$pid."\"><img src=\"".$path."\" alt=\"image-".$pname."\"></a></figure>");
+                echo("<div class = \"item-info\"><h4>".$pname."</h4><p>".$description."</p>
+                <div class = \"keep-or-remove\"><h4>$".$price *$total_number."</h4>
+                <form method=POST action=process-remove-cart.php class=cart-remove><input name=pid type=hidden class=hidden-pid-checkout value=".$pid.">
+                <button type=submit value=\"remove\" name = \"remove\">Remove</button></form>
+                <p class = \"text-quantity\">Quantity</p>
+                <form class=update-quantity-form method=POST action=\"process-quantity-change.php\"><input type = \"number\" class = \"item-quantity\" name = \"item-quantity\" value = \"".$total_number."\" >");
+                echo('<input type =submit class=submit-update-button value=Update>');
+                echo("<input name=pid type=hidden class=hidden-pid-checkout value=".$pid."></form>");
+                echo("</div></div></div>");//closing
+              }
+              mysqli_stmt_free_result($stmt);
+              mysqli_stmt_close($stmt);
+              //print subtotal
+              $sql = "SELECT sum(total_price) FROM Cart WHERE username = ?";
 
-            <div class="entry">
-                <figure>
-                    <a href="item-page.php">
-                        <img src="images/example-mazda3.jpg" alt="item1">
-                    </a>
-                </figure>
-                <div class="item-info">
-                    <h4>All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <div class="keep-or-remove">
-                        <h4>$100,000</h4>
-                        <button value="Remove">Remove</button>
-                        <p class="text-quantity">Quantity</p>
-                        <input type="number" class="item-quantity" name="item-quantity" value="1">
-                    </div>
-                </div>
-            </div>
+              if($stmtCartTotal = mysqli_prepare($con, $sql)) {
+                mysqli_stmt_bind_param($stmtCartTotal, "s", $username);
 
-            <div class="entry">
-                <figure>
-                    <a href="item-page.php">
-                        <img src="images/example-mazda3.jpg" alt="item1">
-                    </a>
-                </figure>
-                <div class="item-info">
-                    <h4>All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <div class="keep-or-remove">
-                        <h4>$100,000</h4>
-                        <button value="Remove">Remove</button>
-                        <p class="text-quantity">Quantity</p>
-                        <input type="number" class="item-quantity" name="item-quantity" value="1">
-                    </div>
-                </div>
-            </div>
+                mysqli_stmt_execute($stmtCartTotal);
+                mysqli_stmt_bind_result($stmtCartTotal, $sum);
+                mysqli_stmt_fetch($stmtCartTotal);
+                if($sum != 0)  {
+                  echo("<div class = \"entry\" id=\"cancel-entry-div\">
+                  <form method = \"POST\" id = \"checkout-form\" name = \"checkout-form\" action = \"process-checkout.php\">");
+                  echo("<label>Subtotal:<span id=\"subtotal\">".$sum."</span></label>
+                  <input type=\"submit\" id=\"checkout\" class = \"btn\" value=\"Checkout\"/>
+                  </form></div>");
+                  mysqli_stmt_close($stmtCartTotal);
+                }
+                else {
+                  echo("<h4 class=\"txt-item-notfound\">No item Found</h4>");
+                }
+              }
+             ?>
 
-            <div class="entry">
-                <figure>
-                    <a href="item-page.php">
-                        <img src="images/example-mazda3.jpg" alt="item1">
-                    </a>
-                </figure>
-                <div class="item-info">
-                    <h4>All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <div class="keep-or-remove">
-                        <h4>$100,000</h4>
-                        <button value="Remove">Remove</button>
-                        <p class="text-quantity">Quantity</p>
-                        <input type="number" class="item-quantity" name="item-quantity" value="1">
-                    </div>
-                </div>
-            </div>
-
-            <div class="entry">
-                <figure>
-                    <a href="item-page.php">
-                        <img src="images/example-mazda3.jpg" alt="item1">
-                    </a>
-                </figure>
-                <div class="item-info">
-                    <h4>All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <div class="keep-or-remove">
-                        <h4>$100,000</h4>
-                        <button value="Remove">Remove</button>
-                        <p class="text-quantity">Quantity</p>
-                        <input type="number" class="item-quantity" name="item-quantity" value="1">
-                    </div>
-                </div>
-            </div>
-
-            <div class="entry" id="cancel-entry-div">
+            <!-- <div class="entry" id="cancel-entry-div">
                 <form method="POST" id="checkout-form">
                     <label>Subtotal:<span id="subtotal">$400,000</span></label>
                     <input type="button" id="checkout" class="btn" value="Checkout">
                 </form>
-            </div>
+            </div> -->
         </div>
     </main>
 
-    <footer>
-        <a href="#top" id="back-to-top">Back to Top</a>
-        <div id="about-us">
-            <p>About Us</p>
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-        </div>
-        <div class="top-border">
-            <div id="contact-us">
-                <p>Contact Us</p>
-                <p>Email: <a href="#">aa@a.com</a></p>
-                <p>Tel: <a href="#">111.222.3333</a></p>
-            </div>
-        </div>
-        <div class="top-border" id="copyright">
-            <p>Copyright &copy; 2018 Project</p>
-        </div>
-    </footer>
+  <?php include 'include/footer.php' ?>
 </body>
 
 </html>

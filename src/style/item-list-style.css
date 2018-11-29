@@ -8,6 +8,7 @@
     margin-left: 3em;
     font-size:2em;
     padding-top: 1.5em;
+    color: #414159;
 }
 
 .entry{
@@ -36,7 +37,7 @@
 
 
 .btn{
-    background-color: #6f9fd8;
+    background-color: #A6AB50;
     padding: .75em .75em;
     color:white;
     margin-left: 30%;

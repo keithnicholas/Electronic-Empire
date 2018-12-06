@@ -69,6 +69,7 @@ else{ //item hasnt been added by the user
         mysqli_stmt_close($stmt1);
     }
 }
+
 mysqli_close($connection);
 
 

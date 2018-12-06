@@ -1,3 +1,6 @@
+.text-error{
+    color:#bb0000;
+}
 #mainForm label{
     /* background-color: #c2b9b03b; */
     border: none;
@@ -20,6 +23,8 @@
     border:0.5pt solid black;
     display: flex;
     flex-direction: column;
+    max-width: 200px;
+    max-height: 150px;
 }
 #item-bar{
     margin-left: 17em;
@@ -30,7 +35,7 @@
     align-items: baseline;
     flex-direction: column;
 }
-.entry-user-view input[value="edit"]{
+.entry-user-view input[value="update"]{
     background-color: #A6AB50;
     margin:0 2em;
     display: inline-block;
@@ -38,7 +43,7 @@
     padding: .125em 1em;
     color:white;
     font-size: .8em;
-    
+
     border: none;
 }
 .buttons-form-user{
@@ -54,4 +59,30 @@
     font-size: 1.25em;
     background-color: #A6AB50;
     border: none;
+}
+
+.hiddenRow {
+  border: none;
+  color:white;
+  padding: .125em 0em;
+  margin-left: 1em;
+  text-decoration: none;
+  font-size: 1.25em;
+  /* padding: 0 0; */
+  display: none;
+  overflow: hidden;
+}
+
+.collapsible{
+  /* background-color: #777; */
+  background-color: #c2b9b2ed;
+  color: white;
+  cursor: pointer;
+  margin-bottom:1em;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 1em;
+  padding:1em;
 }

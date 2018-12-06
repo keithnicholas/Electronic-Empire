@@ -43,22 +43,27 @@ if($_SERVER['REQUEST_METHOD'] =='POST') {
     }
     else {
       $file_upload_name = $_FILES['product-image']['tmp_name'];
-      $result = move_uploaded_file($file_upload_name, $target_file);
+      if(move_uploaded_file($file_upload_name, $target_file)) {
+        //insert product
+        $sql = "INSERT INTO Product(pname, description, price, category,p_img_path)
+        VALUES(?,?,?,?,?)";
+        $stmt =mysqli_prepare($con, $sql);
+        if(!$stmt) exit("fail to insert");
+        else {
+          mysqli_stmt_bind_param($stmt, "ssiss", $name, $description,$price, $producer, $target_file);
+          mysqli_stmt_execute($stmt);
+          mysqli_stmt_free_result($stmt);
+          mysqli_stmt_close($stmt);//close  statment
+          mysqli_close($con);
+          //TODO: add a snackbar to make notification fancy
+          header("Location: " . $_SERVER['HTTP_REFERER']);
+        }//end else
+      }
+      else {
+        exit("fail to upload image");
+      }
     }
-    //insert product
-    $sql = "INSERT INTO Product(pname, description, price, category,p_img_path)
-    VALUES(?,?,?,?,?)";
-    $stmt =mysqli_prepare($con, $sql);
-    if(!$stmt) exit("fail to insert");
-    else {
-      mysqli_stmt_bind_param($stmt, "ssiss", $name, $description,$price, $producer, $target_file);
-      mysqli_stmt_execute($stmt);
-      mysqli_stmt_free_result($stmt);
-      mysqli_stmt_close($stmt);//close  statment
-      mysqli_close($con);
-      //TODO: add a snackbar to make notification fancy
-      header("Location: " . $_SERVER['HTTP_REFERER']);
-    }//end else
+
   }//end if isset
 }//end if POST
 else {//having GET method

@@ -40,14 +40,32 @@ input[name="done"]{
     font-size: 1em;
 }
 
-#item-bar input[type="search"],#item-bar input[type="button"]
+#item-bar input[type="search"],#item-bar input[type="submit"]
 {
-    padding: .15em;
+    padding:.35em;
 }
-
+#item-bar input[type="submit"]{
+    color:white;
+    background-color:#414159;
+    border:none;
+    padding:.42em;
+    margin-left:.5em;
+}
 .comment-form{
     overflow:auto;
 }
 .comment-template{
     color:white;
+}
+table{
+  width:60%;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  border-collapse: collapse;
+}
+td,th{
+  padding:1em 2em;
+  border: 1px solid #ddd;
+}
+#tableListOrder tr{
+  border-bottom: 2px solid black;
 }

@@ -20,7 +20,7 @@ if($rst1 = mysqli_query($connection,$queryCheckout)){
     while($row = mysqli_fetch_assoc($rst1)){
         array_push($arrayCheckout,$row);
     }
-    
+
 }
 else{
     exit('<p>Error 404 check 1</p>');
@@ -34,13 +34,27 @@ $queryInsertOrder = "Insert INTO Orders (order_date,username,pid,total_number) V
     echo '<br>';
 }*/
 //Transfer from Cart to ORder and remove items from cart
-if($stmt1 = mysqli_prepare($connection,$queryInsertOrder)){
-    
+// if($stmt1 = mysqli_prepare($connection,$queryInsertOrder)){
+
+    // foreach($arrayCheckout as $key => $value){//NOTE
+
+        // mysqli_stmt_bind_param($stmt1,'sii',$usernameCheckout,$value['pid'],$value['total_number']);
+        // mysqli_stmt_execute($stmt1);
+        //testing with new tables
+        $sql_order = "INSERT INTO Orders (order_date, username) VALUES(CURRENT_DATE, ?)";
+        $stmt_order = mysqli_prepare($connection, $sql_order);
+        mysqli_stmt_bind_param($stmt_order, "s", $usernameCheckout);
+        mysqli_stmt_execute($stmt_order);
+        $order_id = mysqli_insert_id($connection);
+        mysqli_stmt_close($stmt_order);
+        echo($order_id);
     foreach($arrayCheckout as $key => $value){
-        
-        mysqli_stmt_bind_param($stmt1,'sii',$usernameCheckout,$value['pid'],$value['total_number']);
-        mysqli_stmt_execute($stmt1);
-        
+        $sql_orderedprod = "INSERT INTO OrderedProduct(order_id, pid, total_number) VALUES(?,?,?)";
+        $stmt_op = mysqli_prepare($connection, $sql_orderedprod);
+        mysqli_stmt_bind_param($stmt_op, "iii", $order_id, $value['pid'], $value['total_number']);
+        mysqli_stmt_execute($stmt_op);
+        mysqli_stmt_close($stmt_op);
+
         //echo('<br>row inserted to Orders: '.mysqli_stmt_affected_rows($stmt1));
         $queryDelete = "DELETE from Cart where username='".$usernameCheckout."' and pid=".(int)$value['pid'];
         //$queryDelete='select * from customer';
@@ -49,22 +63,20 @@ if($stmt1 = mysqli_prepare($connection,$queryInsertOrder)){
             //echo('running<br>');
             //echo ('row deleted from Cart: '.mysqli_affected_rows($connection));
         }
-
-        
     }
     header("Location: ".URL.'main-page.php');
-    mysqli_stmt_close($stmt1);
-    
-}
+    // mysqli_stmt_close($stmt1);
+
+// }
 /*if($stmtDelete = mysqli_prepare($connection,$queryDelete)){
 
     mysqli_stmt_bind_param($stmtDelete,'s',$usernameCheckout);
     mysqli_stmt_execute($stmtDelete);
     echo('row deleted from cart: '.mysqli_stmt_affected_rows($stmtDelete));
 }*/
-else{
-    echo 'fail';
-}
+// else{
+//     echo 'fail';
+// }
 mysqli_close($connection);
 
 

@@ -12,12 +12,15 @@
 }
 
 .entry{
+    background-color:#c2b9b2ed;
     display: inline-flex;
     flex-direction: column;
     padding:1em;
     margin-left: 4em;
     margin-right: 4em;
     margin-top:1em;
+    max-width: 375px;
+    max-height: 450px;
 }
 .entry img{
     width:175px;
@@ -34,9 +37,13 @@
     margin-left:3em;
     margin-top:2em;
 }
+.item-info h3{
+    margin-left:2.5em;
+    margin-top:2em;
+    color:#414159;
+}
 
-
-.btn{
+.btn1{
     background-color: #A6AB50;
     padding: .75em .75em;
     color:white;

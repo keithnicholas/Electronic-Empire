@@ -41,7 +41,7 @@ if(isset($_POST['forgotpassField'])) {
     // $mail->addReplyTo('puck19970418@gmail.com');
 
     $mail->isHTML(true);
-    $mail->Subject='PHP Mailer Subject';
+    $mail->Subject='Password Reset';
     $mail->Body='<p>Dear user, your password has been reset to: <br>'.$rand_pw.'</p>';
     if(!$mail->send()) {
       $_SESSION['error']['InvalidEmail'] = 'User not exist, or invalid email address';

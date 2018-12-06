@@ -3,7 +3,7 @@
     include "include/urldata.php";
     if(!isset($_SESSION['username'])){ //if users is not loggedin
         $urlRedict = $_SERVER["HTTP_REFERER"];
-        header("Location: ".URL.$urlRedict);
+        header("Location: ".URL.'main-page.php');
     }
     else
     { //if user is logged in

@@ -12,7 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
     <script type="text/javascript" src="js/checkout-quantity.js"></script>
-    
+
 </head>
 
 <body>
@@ -46,7 +46,7 @@
                 echo("");
                 echo("<div class = \"entry\"><figure><a href=\"item-page.php?pid=".$pid."\"><img src=\"".$path."\" alt=\"image-".$pname."\"></a></figure>");
                 echo("<div class = \"item-info\"><h4>".$pname."</h4><p>".$description."</p>
-                <div class = \"keep-or-remove\"><h4>$".$price *$total_number."</h4>
+                <div class = \"keep-or-remove\"><h4>$".$price."</h4>
                 <form method=POST action=process-remove-cart.php class=cart-remove><input name=pid type=hidden class=hidden-pid-checkout value=".$pid.">
                 <button type=submit value=\"remove\" name = \"remove\">Remove</button></form>
                 <p class = \"text-quantity\">Quantity</p>

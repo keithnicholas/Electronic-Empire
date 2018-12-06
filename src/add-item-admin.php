@@ -17,7 +17,12 @@
         include "include/catelogry-list.php";
         include "include/db_credentials.php";
 
+        //secure admin pages
         session_start();
+        if(!isset($_SESSION['username']) ||isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 0){
+            echo("<h1 align = center>You do not have access to this page</h1>");
+            exit();
+        }
   ?>
     <article id="item-bar">
         <h2>Add Items</h2>
@@ -28,7 +33,7 @@
                 <input type="text" class="additem-form" required name="item-name">
             </p>
             <p class="entry-additem-form">
-                <label>Producer: </label>
+                <label>Category: </label>
                 <input type="text" required name="producer-name" class="additem-form">
             </p>
             <p class="entry-additem-form"><label>Price: </label>

@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 
 <head lang="en">
@@ -15,24 +14,55 @@
   <?php include "include/admin-header.php";
         include "include/catelogry-list.php";
         include "include/db_credentials.php";
+
+        //secure admin pages
+        session_start();
+        if(!isset($_SESSION['username']) ||isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 0){
+            echo("<h1 align = center>You do not have access to this page</h1>");
+            exit();
+        }
   ?>
     <article id="item-bar">
         <h2>Edit Items</h2>
         <h3>Provide the item details on the following fields: </h3>
-        <form method=POST id="add-item-form" action = "process-edit-item-admin.php">
+        <form method="POST" id="add-item-form" action = "process-edit-item-admin.php" enctype="multipart/form-data">
+
+          <p class="entry-additem-form">
+            <input type = "radio" name = "choice" value = "UPDATE" checked>
+            <label for = "update">UPDATE</label>
+            <input type = "radio" name = "choice" value = "DELETE">
+            <label for = "delete">DELETE</label>
+          </p>
+          <p class="entry-additem-form">
+              <label>Product Id:</label>
+              <input type="text" class="additem-form" required name="item-id">
+          </p>
             <p class="entry-additem-form">
                 <label>Name of the Item:</label>
-                <input type="text" class="additem-form" required name="item-name">
+                <input type="text" class="additem-form" name="item-name">
             </p>
             <p class="entry-additem-form">
-                <label>Producer: </label>
-                <input type="text" required name="producer-name" class="additem-form">
+                <label>Category: </label>
+                <input type="text" class="additem-form" name="item-category">
             </p>
             <p class="entry-additem-form"><label>Price: </label>
-                <input type="number" class="additem-form" name="price-additem-name">
+                <input type="number" class="additem-form" name="item-price">
             </p>
             <p class="entry-additem-form"><label>Description</label>
-                <textarea rows="6" cols="70" class="additem-form" placeholder="Enter Description here(Optional)"></textarea>
+                <textarea rows="6" cols="70" class="additem-form" placeholder="Edit Description here(Optional)" name = "item-description"></textarea>
+            </p>
+            <p class="entry-additem-form">
+                <label>Image: </label>
+                <input type="file" name = "item-image" accept="image/png, image/jpeg, image/gif, image/jpg">
+                <?php
+                  if(isset($_SESSION['error']['file_to_large']))
+                    echo "<span class=\"text-error\">".$_SESSION['error']['file_to_large']."</span>";
+                  $_SESSION['error']['file_to_large'] = null;
+                  if(isset($_SESSION['error']['unable_upload'])) {
+                    echo "<span class=\"text-error\">".$_SESSION['error']['unable_upload']."</span>";
+                  $_SESSION['error']['unable_upload'] = null;
+                  }
+                ?>
             </p>
             <div class="buttons-form-additem">
                 <button type="submit"name="submit-button">Submit</button>

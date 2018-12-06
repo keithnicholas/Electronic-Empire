@@ -5,7 +5,7 @@ include 'include/urldata.php';
 
 
 session_start();
-
+if($_SESSION['active'] == 0) exit();
 if (isset($_SESSION['username']) && !empty($_POST['ur-comment-textarea'])) {//send comment to Database
   echo ($_SESSION['username'] );
   echo ($_POST['ur-comment-textarea'] );

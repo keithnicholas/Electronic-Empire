@@ -8,6 +8,7 @@ footer{
     clear:left;
     color:white;
     margin-top:inherit;
+    overflow:auto;
 }
 
 #back-to-top{
@@ -38,4 +39,14 @@ footer{
 #contact-us a{
     text-decoration: none;
     color:white;
+}
+#toppest-border{
+    /* border-top:1px hidden black; */
+}
+.footer-entry{
+    padding-bottom:.5em;
+}
+footer div{
+    margin-bottom:0.25em;
+    margin-top:0.25em;
 }

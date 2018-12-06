@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS Stores;
 DROP TABLE IF EXISTS Shipment;
+DROP TABLE IF EXISTS OrderedProduct;
 DROP TABLE IF EXISTS Orders;
 DROP TABLE IF EXISTS Cart;
 DROP TABLE IF EXISTS Storage;
@@ -19,8 +20,11 @@ CREATE TABLE Customer(
     zip VARCHAR(10)  NOT NULL,
     card_number VARCHAR(17),
     card_password VARCHAR(10),
-    userImage blob,
-    userImageType VARCHAR(50),
+    -- userImage longblob,
+    -- userImageType VARCHAR(50),
+    p_img_path VARCHAR(255),
+    active INT DEFAULT 1,
+    isAdmin INT DEFAULT 0,
     -- mediumblob
     Primary Key(username)
 );
@@ -48,17 +52,17 @@ CREATE TABLE Comment(
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
     FOREIGN KEY(pid) REFERENCES Product(pid)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION
 );
 
-CREATE TABLE Storage(
-    sid INT AUTO_INCREMENT,
-    name  VARCHAR(30) NOT NULL,
-    city  VARCHAR(30) NOT NULL,
-    state  VARCHAR(10) NOT NULL,
-    Primary Key(sid)
-);
+-- CREATE TABLE Storage(
+--     sid INT AUTO_INCREMENT,
+--     name  VARCHAR(30) NOT NULL,
+--     city  VARCHAR(30) NOT NULL,
+--     state  VARCHAR(10) NOT NULL,
+--     Primary Key(sid)
+-- );
 
 
 CREATE TABLE Cart(
@@ -72,30 +76,37 @@ CREATE TABLE Cart(
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
     FOREIGN KEY (pid) REFERENCES Product(pid)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION
 );
 
 CREATE TABLE Orders(
-  order_id INT AUTO_INCREMENT,
+  order_id INT AUTO_INCREMENT PRIMARY KEY,
   order_date date,
   username VARCHAR(50),
-  pid INT,
-  total_number INT,
-  Primary Key(order_id),
-  FOREIGN KEY (username) REFERENCES Customer(username),
-  FOREIGN KEY (pid) REFERENCES Product(pid)
+  FOREIGN KEY (username) REFERENCES Customer(username)
 )engine=innodb;
 
-CREATE TABLE Shipment(
-    sid INT Auto_increment,
-    order_id INT,
-    shipment_Date DATE NOT NULL,
-    Primary Key(sid),
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+CREATE TABLE OrderedProduct (
+  order_id INT,
+  pid INT,
+  total_number INT,
+  PRIMARY KEY(order_id, pid),
+  FOREIGN KEY(order_id) REFERENCES Orders(order_id),
+  FOREIGN KEY(pid) REFERENCES Product(pid)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
 );
+
+-- CREATE TABLE Shipment(
+--     sid INT Auto_increment,
+--     order_id INT,
+--     shipment_Date DATE NOT NULL,
+--     Primary Key(sid),
+--     FOREIGN KEY (order_id) REFERENCES Orders(order_id)
+--     ON DELETE NO ACTION
+--     ON UPDATE NO ACTION
+-- );
 --
 -- CREATE TABLE Stores(
 --     pid INT,
@@ -122,7 +133,7 @@ INSERT INTO Customer (username,first_name,last_name,pw, email, address,city,stat
 INSERT INTO Customer (username,first_name,last_name,pw, email, address,city,state,zip,card_number,card_password) Values ('OR','Oscar','Ray',MD5('Oscar'),'or1999@gmail.com','95 Junge Rd','Missisauga','ON','V5Z3A9','1234567878877','44444444');
 
 INSERT INTO Customer (username,first_name,last_name,pw, email, address,city,state,zip,card_number,card_password) Values ('EA','Emily','Alice',MD5('Emily'),'ea1999@gmail.com','505 Jane Rd','Hope','BC','V3Z3A8','1234258778877','55555555');
-INSERT INTO Customer (username,first_name,last_name,pw, email, address,city,state,zip) Values ('Admin','Puck','Wang',MD5('Admin'),'zwang2020@alumni.com','123 ABC Rd','Kelowna','BC','V5PN3N');
+INSERT INTO Customer (username,first_name,last_name,pw, email, address,city,state,zip) Values ('Admin','Puck','Wang',MD5('Admin'),'puck19970418@gmail.com','123 ABC Rd','Kelowna','BC','V5PN3N');
 
 INSERT INTO Product(pname, description, price, category, con) Values ('Macbook_pro','very good laptop designed by apple Inc',3299,'laptop','new');
 INSERT INTO Product(pname, description, price, category, con) Values ('8G_Ram','8G ram for computer',599,'component','new');
@@ -143,13 +154,13 @@ INSERT INTO Comment (username,Pid,comment_date,Rate,comment_info) Values ('OR',1
 INSERT INTO Comment (username,Pid,comment_date,Rate,comment_info) Values ('EA',2, '2015-11-23',1, 'this is very bad');
 INSERT INTO Comment (username,Pid,comment_date,Rate,comment_info) Values ('EA',1, '2018-11-22',2, 'this is very bad');
 
-INSERT INTO Storage (name, city, state) Values ('Store A', 'Kelowna', 'BC');
-INSERT INTO Storage (name, city, state) Values ('Store B', 'Vancouver', 'BC');
-INSERT INTO Storage (name, city, state) Values ('Store C', 'Armstrong', 'BC');
-INSERT INTO Storage (name, city, state) Values ('Store D', 'Burnaby', 'BC');
-INSERT INTO Storage (name, city, state) Values ('Store E', 'Colwood', 'BC');
-INSERT INTO Storage (name, city, state) Values ('Store F', 'Delta', 'BC');
-INSERT INTO Storage (name, city, state) Values ('Store G', 'Duncan', 'BC');
+-- INSERT INTO Storage (name, city, state) Values ('Store A', 'Kelowna', 'BC');
+-- INSERT INTO Storage (name, city, state) Values ('Store B', 'Vancouver', 'BC');
+-- INSERT INTO Storage (name, city, state) Values ('Store C', 'Armstrong', 'BC');
+-- INSERT INTO Storage (name, city, state) Values ('Store D', 'Burnaby', 'BC');
+-- INSERT INTO Storage (name, city, state) Values ('Store E', 'Colwood', 'BC');
+-- INSERT INTO Storage (name, city, state) Values ('Store F', 'Delta', 'BC');
+-- INSERT INTO Storage (name, city, state) Values ('Store G', 'Duncan', 'BC');
 
 -- INSERT INTO Orders(order_date,username,pid,total_number) Values ( '2017-11-23','OJ',);
 -- INSERT INTO Orders(order_date,username,pid,total_number) Values ('2016-11-23');
@@ -199,4 +210,9 @@ UPDATE Product SET p_img_path = "images/Sony_TV.png" WHERE pid = 8;
 UPDATE Product SET p_img_path = "images/Keyboard.png" WHERE pid = 9;
 UPDATE Product SET p_img_path = "images/mouse.png" WHERE pid = 10;
 
-UPDATE Customer SET p_img_path = "images/zelda.jpg" WHERE username = 'Admin';
+UPDATE Customer SET isAdmin = 1, p_img_path = "uploads/zelda.png" WHERE username = 'Admin';
+UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'OJ';
+UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'JL';
+UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'WD';
+UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'OR';
+UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'EA';

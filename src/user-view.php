@@ -8,50 +8,73 @@
     <link rel="stylesheet" href="style/header.css">
     <link rel="stylesheet" href="style/footer.css">
     <link rel="stylesheet" href="style/user-style.css">
+    <script src="js/userview.js"></script>
 </head>
 
-<body
+<body>
   <?php include "include/header.php";
         include "include/catelogry-list.php";
         include "include/db_credentials.php";
         include 'include/urldata.php';
-  ?>
-  <?php
-    include "process-userview.php";
-  ?>
-    <main>
-        <article id="item-bar">
-            <h2>User Profile</h2>
-            <form method="POST" id="mainForm">
+        include "functions-user-view.php";
 
-                <p class="entry-user-view">
-                    <label><a href="#">
-                        <img src="images/700.jpg" alt="user-image" title="edit"/></a>
-                    </label>
-                    <label><input type="file" name="upload-pic" accept="image/*"/>
-                    </label>
-                </p>
-                <p class="entry-user-view">
-                    <label>Username:</label>
-                    <label id="user-address"><?php echo ($usernameInfo); ?></label>
-                <p class="entry-user-view">
-                    <label>User Address:</label>
-                    <label id="user-address"><?php echo($addressInfo); ?>
-                    <input type="button"name="user-address" value="edit"/></label>
-                </p>
-                <p class="entry-user-view">
-                    <label>Email:</label>
-                    <label id="user-email"><?php echo($emailInfo); ?><input type="button" name="user-email" value="edit"/></label>
-                </p>
-                <p class="entry-user-view">
-                    <label>Password:</label>
-                    <label id="user-Password">********<input type="button" name="user-password" value="edit"/></label>
-                </p>
-                <p></p>
-                <div class="buttons-form-user">
-                    <button type="submit" name="submit-button">Submit</button>
-                </div>
-            </form>
+        if(!isset($_SESSION['username'])) {
+          header("Location: login-screen.php");
+        }
+        else {
+          $usernmae = $_SESSION['username'];
+        }
+
+  ?>
+      <main>
+        <article id="item-bar">
+
+            <?php
+              echo("<h2 align=center>Welcome Back ".$_SESSION['username']."</h2>");
+
+              echo("<h3>User Profile</h3>");
+              $con = mysqli_connect($host, $db_user, $db_pw, $database);
+              if(mysqli_connect_errno()){ //if cannot connect
+                exit("<p>cannot connect to DB: ".mysqli_connect_error.'</p>');
+              }
+
+              update_profile($con, $username);
+              //display user comment
+              $sql_date = "SELECT comment_date FROM Comment WHERE username = ?
+               GROUP BY comment_date ORDER BY comment_date DESC";
+              $stmt_date = mysqli_prepare($con, $sql_date);
+              mysqli_stmt_bind_param($stmt_date, "s", $username);
+              mysqli_stmt_execute($stmt_date);
+              mysqli_stmt_bind_result($stmt_date, $date);
+              mysqli_stmt_store_result($stmt_date);
+              $row = mysqli_stmt_num_rows($stmt_date);
+
+              if($row > 0) {
+                echo("<h3>User Activity</h3>");
+                while(mysqli_stmt_fetch($stmt_date)) {
+                  $sql = "SELECT pname, comment_info
+                  FROM  Comment NATURAL JOIN Product
+                  WHERE username = ? AND comment_date = ?
+
+                  ORDER BY comment_date DESC";
+                  if($stmt = mysqli_prepare($con, $sql)) {
+                    mysqli_stmt_bind_param($stmt, "ss", $username, $date);
+                    mysqli_stmt_execute($stmt);
+                    mysqli_stmt_bind_result($stmt, $pname, $info);
+
+                    echo ("<button class = \"collapsible\">".$date."</button><div class = \"hiddenRow\">");
+                    while(mysqli_stmt_fetch($stmt)){
+                      echo ("Product: ".$pname."<br>Comment: ".$info."<hr><br>");
+                    }
+                    echo ("</div>");
+                  mysqli_stmt_close($stmt);
+                  }//end if
+                }//end while
+              }//end if
+              mysqli_stmt_close($stmt_date);
+
+              ?>
+
         </article>
     </main>
   <?php include 'include/footer.php' ?>

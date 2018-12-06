@@ -42,12 +42,13 @@ else{ //verify user from Database
     }else{
         //NOTHING SHOULD BE HERE
     }
-    $queryCheckUser= "SELECT username,pw from Customer where username=?";
+    $queryCheckUser= "SELECT username,pw,active, isAdmin from Customer where username=?";
     $isUserValid = false;
+    $userActive = $isAdmin = null;
     if($stmt1 = mysqli_prepare($connection,$queryCheckUser)){
         mysqli_stmt_bind_param($stmt1,'s',$usernameEntered);
         mysqli_stmt_execute($stmt1);
-        mysqli_stmt_bind_result($stmt1,$colUsername,$colPassword);
+        mysqli_stmt_bind_result($stmt1,$colUsername,$colPassword,$userActive, $isAdmin);
         mysqli_stmt_store_result($stmt1);
         if(mysqli_stmt_num_rows($stmt1) == 1){ //check username by string
             echo ('<p>'.'ok num row'.'</p>');
@@ -83,10 +84,14 @@ else{ //verify user from Database
         echo ("<h3>User: ".$usernameEntered." is logged in. Congrats");
         mysqli_close($connection);
         $_SESSION["username"] = $usernameEntered;
-        if($_SESSION["username"] == "Admin")
+        $_SESSION['active'] = $userActive;
+        $_SESSION['isAdmin'] = $isAdmin;
+        if(isset($_SESSION['username']) && $_SESSION['isAdmin'] == 1) {
           $urlRedict = "admin-main.php";
-        else
-          $urlRedict = $_SERVER[HTTP_REFERER];
+        }
+        else if(isset($_SESSION['username']) && $_SESSION['isAdmin'] == 0){
+          $urlRedict = 'main-page.php';
+        }
 
         header("Location: ".$urlRedict);
 

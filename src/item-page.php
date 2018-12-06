@@ -36,6 +36,12 @@
           else {
             mysqli_stmt_bind_param($stmt, 's', $pid);
             mysqli_stmt_execute($stmt);
+
+            mysqli_stmt_store_result($stmt);
+            if(mysqli_stmt_num_rows($stmt)==0) {
+              echo("<h2 align = center>NO ITEM FOUND/ ITEM IS NOT AVAILABLE</h2>");
+              exit();
+            }
             mysqli_stmt_bind_result($stmt, $pid, $pname, $desc, $price, $path);
             //product info
             mysqli_stmt_fetch($stmt);
@@ -44,7 +50,7 @@
             "</h2><figure><img src=\"".$path."\" alt=product></figure>");
             echo("<div id=container-description-price><p id=description-itempage>"
             .$desc."</p><p id=price-itempage>Price: $".$price."</p></div>");
-            if(isset($_SESSION['username'])){
+            if(isset($_SESSION['username']) && isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 0){//only customers have access to add-to-cart button
                 echo("<button class=btn-item-page id=btn-item-page-addcart name=btn-item-page-addcart>Add to Cart</button>");
             }
 
@@ -57,45 +63,39 @@
             }
 
             //comment session
-
             echo("<div id=comments-itempage><p id=\"comment\">Comments</p>");
-            /*$sql_cm = "SELECT username, comment_date, comment_info FROM comment WHERE pid = ?";
-            $stmt = mysqli_prepare($con, $sql_cm);
-            if(!$stmt) exit("fail to select<br>");
-            else {
-              mysqli_stmt_bind_param($stmt, 's', $pid);
-              mysqli_stmt_execute($stmt);
-              mysqli_stmt_bind_result($stmt, $username, $comment_date, $comment_info);
-              echo("<div id=comments-itempage><p id=comment>Comments</p>");
-              while(mysqli_stmt_fetch($stmt)) {
-                echo("<div class=comment-template><span class=user-id>"
-                .$username."</span><span class=user-comment>".$comment_info
-                ."</span></div>");
-              }
-            }*/
-            //echo("<script src=\"js/item-ajax.js\"></script>");//receive the current user comment
             echo("</div>");
             // mysqli_stmt_free_result($stmt);
             // mysqli_stmt_close($stmt);
             // action=process-comment.php
-            if(isset($_SESSION['username'])) {
-              echo("<div id=\"ur-comment\"><p id=\"write-ur-comment\">Write your comment</p>");
+            if(isset($_SESSION['username']) && isset($_SESSION['active']) && $_SESSION['active']==1 ) {//user is logged in and comment enabled
+              echo("<div id=\"ur-comment\"><p id=\"write-ur-comment\">Write comments for this product</p>");
               echo("<form id=\"ur-comment-form\" method=POST action=\"process-insert-comment.php\">
               <input type=textarea name=\"ur-comment-textarea\" id=\"ur-comment-textarea\" row=6 cols=70>
               <input class=btn-item-page type=submit name=submit value=submit id=sub>
               </form></div>");
               //TODO: change the style of button in css-all for btn?
             }
-            else{
-              echo("<div id=ur-comment><p id=write-ur-comment>Write your comment</p>");
+            else if (isset($_SESSION['username']) && isset($_SESSION['active']) && $_SESSION['active']==0){//comment disabled
+              echo("<div id=ur-comment><p id=write-ur-comment>Write comments for this product</p>");
               echo("<form id=ur-comment-form>
               <input type=textarea name=ur-comment-textarea row=6 cols=70
-              value='you have to login to comment the product' disabled>
+              value='Banned from Admin' disabled>
+              <input class=btn-item-page type=submit name=submit value=submit disabled></form></div>");
+            }
+            else{//comment disabled
+              echo("<div id=ur-comment><p id=write-ur-comment>Write comments for this product</p>");
+              echo("<form id=ur-comment-form>
+              <input type=textarea name=ur-comment-textarea row=6 cols=70
+              value='You have to log in to comment this product.' disabled>
               <input class=btn-item-page type=submit name=submit value=submit disabled></form></div>");
             }
             echo("</article></main>");//close main
           }
           mysqli_close($con);
+
+
+
   ?>
   <?php include 'include/footer.php' ?>
 </body>

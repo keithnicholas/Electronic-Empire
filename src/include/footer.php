@@ -1,18 +1,18 @@
 <footer>
     <div id="about-us">
-        <p>About Us</p>
-        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-                egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+        <p class="footer-entry">About Us</p>
+        <p class="footer-entry">Electronic Empire is a store that sells computer components since 1999. Our business primarily sells products through the internet.
+            If you have any inquiries please contact us through the information below
+    </p>
     </div>
-    <div class="top-border">
+    <div class="top-border" id="toppest-border">
         <div id="contact-us">
-            <p>Contact Us</p>
-            <p>Email: <a href="#">aa@a.com</a></p>
-            <p>Tel: <a href="#">111.222.3333</a></p>
+            <p class="footer-entry">Contact Us</p>
+            <p>Email: <a href="#">inquiry@electronicempire.com</a></p>
+            <p>Tel: <a href="#">123-344-2312</a></p>
         </div>
     </div>
     <div class="top-border" id="copyright">
-        <p>Copyright &copy; 2018 Project</p>
+        <p>Copyright &copy; 2018</p>
     </div>
 </footer>

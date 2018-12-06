@@ -61,6 +61,7 @@
     width: 100%;
     position: fixed;/*having fixed navbar*/
     top:0;
+    z-index: 2;
 }
 
 .navbar a {
@@ -102,4 +103,8 @@
 .submit-search:hover {
   background: #f2f2f2;/*color changed*/
   color: purple;
+}
+#main-h1{
+    color:#414159;
+
 }

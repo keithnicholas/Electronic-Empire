@@ -9,76 +9,75 @@
     <link rel="stylesheet" href="style/footer.css">
     <link rel="stylesheet" href="style/additem.css">
     <link rel="stylesheet" href="style/admin-main.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 </head>
 
 <body>
   <?php include "include/admin-header.php";
         include "include/catelogry-list.php";
         include "include/db_credentials.php";
+        include "listorder.php";
+
+        //secure admin pages
+        session_start();
+        if(!isset($_SESSION['username']) ||isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 0){
+            echo("<h1 align = center>You do not have access to this page</h1>");
+            exit();
+        }
+        $con = mysqli_connect($host, $db_user, $db_pw, $database);
+        if (mysqli_connect_errno()) { //if cannot connect
+          exit("<p>cannot connect to DB: " . mysqli_connect_error . '</p>');
+        }
+
+        // $sql = "SELECT username, COUNT(*) as total FROM Comment GROUP BY username";
+        $sql = "SELECT pname, SUM(total_number) AS total FROM OrderedProduct NATURAL JOIN Product GROUP BY pname";
+        $result = mysqli_query($con, $sql);
   ?>
 
     <article id="item-bar">
-        <h2>Admin Page</h2>
-        <form method=POST id="add-item-form">
-            <p class="entry-additem-form">
-                <label>User Search:</label>
-                <input type="search" size="30" placeholder="Who are you looking for?" />
-                <input type="button" value="Search" />
-            </p>
-        </form>
+      <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Username','Total'],
+              <?php
+              while($row = mysqli_fetch_array($result)) {
+                echo "['".$row['pname']."',".$row['total']."],";
+              }
+              ?>
+            ]);
+        var options = {'title':'Product Market Share Summary',
+         'width':400, 'height':200,
+          pieHole:0.3};
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+        }
+        </script>
 
-        <form method="POST" id="result-form">
-            <h3>Search Result:</h3>
-            <label>Uid:<label id="user-id">13055793</label></label>
-            <label>Email:<label id="user-email">aa@ubc.com</label></label>
-            <label>ACTION:
-                <input type="radio" name="user-control" value="enable" checked/>enable the user
-                <input type="radio" name="user-control" value="disable"/>disable the user
-            </label>
-            <input type="button" name="done" value="confirm">
-        </form>
+      <?php
+      if(isset($_SESSION['username'])&&isset($_SESSION['isAdmin'])//admin permission check
+       &&$_SESSION['isAdmin'] == 1){
+          $username = $_SESSION['username'];
+      }
+      echo("<h2 align=center>Welcome Back ".$_SESSION['username']."</h2>");
 
-        <form action="POST" id="comment-form">
-            <h3>User Comments:</h3>
-            <h4>(Check to Remove User Comments)</h4>
-            <label><div class="comment-template">
-                <input type="checkbox" name="remove">
-                <span class="user-comment">Pellentesque habitant morbi tristique senectus et netus et malesuada
-                    fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
-                    sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
-                </span>
-            </div></label>
-            <label><div class="comment-template">
-                <input type="checkbox" name="remove">
-                <span class="user-comment">Pellentesque habitant morbi tristique senectus et netus et malesuada
-                    fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
-                    sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
-                </span>
-            </div></label>
-            <label><div class="comment-template">
-                <input type="checkbox" name="remove">
-                <span class="user-comment">Pellentesque habitant morbi tristique senectus et netus et malesuada
-                    fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
-                    sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
-                </span>
-            </div></label>
-            <label><div class="comment-template">
-                <input type="checkbox" name="remove">
-                <span class="user-comment">Pellentesque habitant morbi tristique senectus et netus et malesuada
-                    fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
-                    sit amet quam
-                    egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
-                </span>
-            </div></label>
-        <input type="button" name="done" value="confirm">
-        </form>
+      //graph && charts
+      echo "<div id = \"piechart\"></div>";
+      echo "<div id = \"barchart_values\"></div>";
+
+      echo("<form method = \"POST\" id = \"add-item-form\">
+      <p class = \"entry-additem-form\">
+      <input type = \"submit\" name = \"order\" value = \"Order Summary\"/></p></form>");
+      if(isset($_POST['order'])) {
+        displayOrder($con);
+      }
+      //reset database with sql script
+      echo("<form method = \"POST\" id = \"add-item-form\" action = \"LoadData.php\">
+      <p class = \"entry-additem-form\">
+      <input type = \"submit\" name = \"reset\" value = \"RESET DATABASE\"/></p></form>");
+      ?>
     </article>
     <?php include 'include/footer.php' ?>
 </body>

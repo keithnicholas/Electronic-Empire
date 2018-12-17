@@ -42,15 +42,9 @@ input[name="done"]{
 
 #item-bar input[type="search"],#item-bar input[type="submit"]
 {
-    padding:.35em;
+    padding: .15em;
 }
-#item-bar input[type="submit"]{
-    color:white;
-    background-color:#414159;
-    border:none;
-    padding:.42em;
-    margin-left:.5em;
-}
+
 .comment-form{
     overflow:auto;
 }

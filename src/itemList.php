@@ -54,34 +54,23 @@
           mysqli_stmt_close($stmt);
         }//end isset(category)
         else if(!empty(($_GET['search_query']))) {
-          $row = null;
-          $key = "%".$_GET['search_query']."%";
-          $sql = "SELECT pid, p_img_path, pname, description, price FROM Product
-          WHERE category LIKE ? OR description LIKE ? OR pname LIKE ?";
-          if($stmt = mysqli_prepare($con, $sql)) {
-              echo("<main><div id=\"mainContent\">");
-              mysqli_stmt_bind_param($stmt, "sss", $key, $key, $key);
-              $result = mysqli_stmt_execute($stmt) or die(mysqli_stmt_error($stmt));
-              mysqli_stmt_bind_result($stmt, $pid, $p_img_path, $pname, $description, $price);
-              mysqli_stmt_store_result($stmt);
-              $row = mysqli_stmt_num_rows($stmt);
-              if($row == 0) {
-                echo("<h1 align = center> THE PRODUCT IS NOT AVAILABLE</h1>");
-              }
-              else {
-                while(mysqli_stmt_fetch($stmt)) {
-                  echo("<div class = \"entry\"><figure>
-                  <a href=item-page.php?pid=".$pid."><img src=\"".$p_img_path."\"alt=product></a>
-                  </figure>");
-                  echo("<div class = \"item-info\"><h3>".$pname.
-                  "</h3><p>".$description."</p><p>$".$price."</p></div>");//product info
-                  echo("<form action=include/process-addcart.php method=POST class=form-addcart-itemlist>");
-                  echo("<input name=addcartpid type=hidden class=hidden-pid-checkout value=".$pid.">");
-                  has_username();
-                }
 
-              }
-              mysqli_stmt_close($stmt);
+          $key = $_GET['search_query'];
+          $sql = "SELECT * FROM Product
+          WHERE category LIKE '%".$key."%' OR description LIKE '%".$key."%' OR pname LIKE '%".$key."%'";
+
+          if($stmt = mysqli_query($con, $sql)) {
+            echo("<main><div id=\"mainContent\">");
+            while($row = mysqli_fetch_row($stmt)) {
+              echo("<div class = \"entry\"><figure>
+              <a href=item-page.php?pid=".$row[0]."><img src=\"".$row[6]."\"alt=product></a>
+              </figure>");
+              echo("<div class = \"item-info\"><h3>".$row[1].
+              "</h3><p>".$row[2]."</p><p>$".$row[3]."</p></div>");//product info
+              echo("<form action=include/process-addcart.php method=POST class=form-addcart-itemlist>");
+              echo("<input name=addcartpid type=hidden class=hidden-pid-checkout value=".$row[0].">");
+              has_username();
+            }
           }
         }//end isset(serach_query)
         else {
@@ -105,13 +94,12 @@
 
         //enable button if user logged in, otherwise disable the button
         function has_username() {
-          if (isset($_SESSION['username']) && isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 0) {
+          if (isset($_SESSION['username'])) {
             echo("<input name=username type=hidden class=hidden-username-checkout value=".$_SESSION['username'].">");
             echo("<button type=\"submit\" class = \"btn1\">Add to Cart</button></form></div>");
           }
-          else {//visitor or admin
-            // echo("<button disabled type=\"submit\" class = \"btn1\">Add to Cart</button></form></div>");
-            echo("</form></div>");
+          else {//visitor
+            echo("<button disabled type=\"submit\" class = \"btn1\">Add to Cart</button></form></div>");
           }
         }
   ?>

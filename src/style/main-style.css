@@ -33,28 +33,3 @@
 .category-mainpage{
     color:white;
 }
-
-.hiddenRow {
-  border: none;
-  color:white;
-  padding: .125em 0em;
-  margin-left: 1em;
-  text-decoration: none;
-  font-size: 1.25em;
-  /* padding: 0 0; */
-  display: block;
-  overflow: hidden;
-}
-
-.collapsible{
-  /* background-color: #777; */
-  background-color: #c2b9b2ed;
-  color: white;
-  cursor: pointer;
-  margin-bottom:1em;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 1em;
-}

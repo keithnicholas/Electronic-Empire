@@ -22,7 +22,7 @@
     padding: .125em 1em;
     text-decoration: none;
     font-size:1.25em;
-    display: inline;
+    display: block;
     width:7.5em;
     /* overflow: auto; */
 
@@ -48,18 +48,20 @@ form[id="add-item-form"]{
 
 }
 .buttons-form-additem button{
-    /*margin-top:1em;*/
+    margin-top:1em;
     padding: .125em 1em;
     border-radius: 25px;
     margin-right: 1em;
     color:white;
     font-size: 1.25em;
-    background-color: #414159;
+    background-color: #A6AB50;
     border: none;
 
 }
-.isbanned button{
-  background-color: #414159;
-  color:white;
-  display:inline;
+
+input[type="radio"] {
+  border: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }

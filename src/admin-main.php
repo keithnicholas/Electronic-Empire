@@ -19,12 +19,6 @@
         include "include/db_credentials.php";
         include "listorder.php";
 
-        //secure admin pages
-        session_start();
-        if(!isset($_SESSION['username']) ||isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 0){
-            echo("<h1 align = center>You do not have access to this page</h1>");
-            exit();
-        }
         $con = mysqli_connect($host, $db_user, $db_pw, $database);
         if (mysqli_connect_errno()) { //if cannot connect
           exit("<p>cannot connect to DB: " . mysqli_connect_error . '</p>');
@@ -57,6 +51,7 @@
         </script>
 
       <?php
+      session_start();
       if(isset($_SESSION['username'])&&isset($_SESSION['isAdmin'])//admin permission check
        &&$_SESSION['isAdmin'] == 1){
           $username = $_SESSION['username'];
@@ -69,14 +64,11 @@
 
       echo("<form method = \"POST\" id = \"add-item-form\">
       <p class = \"entry-additem-form\">
-      <input type = \"submit\" name = \"order\" value = \"Order Summary\"/></p></form>");
+      <input type = \"submit\" name = \"order\" value = \"Order\"/></p></form>");
       if(isset($_POST['order'])) {
         displayOrder($con);
       }
-      //reset database with sql script
-      echo("<form method = \"POST\" id = \"add-item-form\" action = \"LoadData.php\">
-      <p class = \"entry-additem-form\">
-      <input type = \"submit\" name = \"reset\" value = \"RESET DATABASE\"/></p></form>");
+
       ?>
     </article>
     <?php include 'include/footer.php' ?>

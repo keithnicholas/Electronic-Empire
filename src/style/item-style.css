@@ -29,12 +29,12 @@ article#item-bar figure img{
     margin-right:2em;
     height:20em;
     width:37.5em;
-    background-color:#eaeaef;
+    background-color:#e7eff6;
     overflow:hidden;
 }
 #price-itempage{
     width:37.5em;
-    
+    background-color:#e7eff6;
 }
 #container-description-price{
     margin-left:0em;

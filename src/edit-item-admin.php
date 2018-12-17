@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head lang="en">
@@ -14,25 +15,18 @@
   <?php include "include/admin-header.php";
         include "include/catelogry-list.php";
         include "include/db_credentials.php";
-
-        //secure admin pages
-        session_start();
-        if(!isset($_SESSION['username']) ||isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 0){
-            echo("<h1 align = center>You do not have access to this page</h1>");
-            exit();
-        }
   ?>
     <article id="item-bar">
         <h2>Edit Items</h2>
         <h3>Provide the item details on the following fields: </h3>
         <form method="POST" id="add-item-form" action = "process-edit-item-admin.php" enctype="multipart/form-data">
-
+          <!-- TODO:radio button for update/ delete -->
           <p class="entry-additem-form">
             <input type = "radio" name = "choice" value = "UPDATE" checked>
             <label for = "update">UPDATE</label>
             <input type = "radio" name = "choice" value = "DELETE">
             <label for = "delete">DELETE</label>
-          </p>
+          </P>
           <p class="entry-additem-form">
               <label>Product Id:</label>
               <input type="text" class="additem-form" required name="item-id">

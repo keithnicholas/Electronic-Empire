@@ -1,8 +1,9 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 include "include/db_credentials.php";
-
+//$host = "localhost";
+// $database = "project";
+// $user = $db_user;
+// $passwordDb = $db_pw;
 include 'include/urldata.php';
 session_start();
 //There are 3 error: error image, error user exists
@@ -11,7 +12,7 @@ if(isset($_SESSION['error'])){
 }
 if(isset($_SESSION['username'])){ //if user already logged on, go to home page
     $urlRedict = "main-page.php";
-    // header("Location: ".URL.$urlRedict);
+    header("Location: ".URL.$urlRedict);
 }
 else{ //verify user from Database
 
@@ -35,27 +36,28 @@ else{ //verify user from Database
             $postcodeEntered = $_POST['postcode'];
             $cardnumEntered=$_POST['cardnum'];
             $cardpassEntered = $_POST['cardpass'];
-            // if(!processImage()){
-            //     $_SESSION['error']['errorImage'] = "Your uploaded image is either too big, not an image or have an invalid extension";
-                // redirect('register-screen.php');
-            // }
-        }//existing empty fields
+            if(!processImage()){
+                $_SESSION['error']['errorImage'] = "Your uploaded image is either too big, not an image or have an invalid extension";
+                redirect('register-screen.php');
+            }
+        }
         else{
             mysqli_close($connection);
             die('<p>Some fields were not entered</p>');
-            // redirect("login-screen.php");
+            //$urlRedict = "login.php";
+            //header("Location: ".URL.$urlRedict);
         }
 
-    }else{//method == GET
+    }else{
         mysqli_close($connection);
         die('<p>Error found in GET</p>');
-        // redirect("login-screen.php");
+        /*$urlRedict = "login.php";
+        header("Location: ".URL.$urlRedict);*/
     }
-    //verify if entries are unique
     $queryCheckEmail = "SELECT username from Customer where email=?";
     $queryCheckUserName = "SELECT username from Customer where username=?";
     $usernameEmailAlready = false;
-    //validate username
+
     if($stmt1 = mysqli_prepare($connection,$queryCheckUserName)){
             mysqli_stmt_bind_param($stmt1,'s',$usernameEntered);
             mysqli_stmt_execute($stmt1);
@@ -67,7 +69,7 @@ else{ //verify user from Database
             mysqli_stmt_close($stmt1);
 
     }
-    //validate email
+
     if($stmt2 = mysqli_prepare($connection,$queryCheckEmail)){
         mysqli_stmt_bind_param($stmt2,'s',$emailEntered);
         mysqli_stmt_execute($stmt2);
@@ -84,85 +86,43 @@ else{ //verify user from Database
         //echo '<p>'.$pageOldRefer.'</p>';
         mysqli_close($connection);
         $_SESSION['error']['useralreadyexists'] = "This user already exists" ;
-        // redirect($pageOldRefer);
+        header("Location: ".$pageOldRefer);
     }else{ //create new user
-        //NOTE: upload usre image with path for now.
-        $uploadok = 1;
-        if(isset($_FILES['userImage'])) {
-          $target_dir = "uploads/";
-          $target_file = $target_dir.basename($_FILES['userImage']['name']);
-          $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-          // $image_size = getimagesize($_FILES['userImage']['tmp_name']);
-          $arr_type  = array('jpg','png','gif','jpeg');
 
-          echo($target_dir."<br>");
-          //verify image
-          // !$image_size ||
-          if(!in_array($imageFileType, $arr_type)
-          || $_FILES['userImage']['size'] >1024000) {//1MB
-            echo("File is too large");
-            $_SESSION['error']['file_to_large'] = "File is too large." ;
-            // redirect("register-screen.php");
-            $uploadok=false;
-          }//end if
-          if(!$uploadok) {
-            $_SESSION['error']['unable_upload'] = "<br>sorry, your file was not uploaded<br>";
-            echo($_SESSION['error']['unable_upload']);
-          }
-          else {
-            $file_upload_name = $_FILES['userImage']['tmp_name'];
-            echo($file_upload_name);
-            if(move_uploaded_file($file_upload_name, $target_file)) {
-              //create a Customer first
-              $queryCreateUser = 'INSERT INTO Customer (username,first_name,last_name,pw, email, address,city,state,zip,card_number,card_password) Values (?,?,?,?,?,?,?,?,?,?,?)';
-              $stmtCreateUser = mysqli_prepare($connection,$queryCreateUser);
-              echo("<p>Query is: ".' '.' '.$usernameEntered.' '.$firstnameEntered.' '.$lastnameEntered.' '.$passwordEntered.' '.$emailEntered.' '.$addressEntered.' '.$cityEntered.' '.$stateEntered.' '.$postcodeEntered.' '.$cardnumEntered.' '.$cardpassEntered);
-              mysqli_stmt_bind_param($stmtCreateUser,'sssssssssss',$usernameEntered,$firstnameEntered,$lastnameEntered,$passwordEntered,$emailEntered,$addressEntered,$cityEntered,$stateEntered,$postcodeEntered,$cardnumEntered,$cardpassEntered);
-              mysqli_stmt_execute($stmtCreateUser);
-              echo("<br>rows inserted: ".mysqli_stmt_affected_rows($stmtCreateUser));
-              mysqli_stmt_close($stmtCreateUser);
-              $printMsg = '<br>an account for the user '.$firstnameEntered.' has been created';
-              echo($printMsg);
-              //update customer image
-              $sql = "UPDATE Customer SET p_img_path = ? WHERE username = ?";
-              $stmt_img = mysqli_prepare($connection, $sql);
-              if(!$stmt_img) exit("fail to update product");
-              mysqli_stmt_bind_param($stmt_img, "ss", $target_file, $usernameEntered);
-              mysqli_stmt_execute($stmt_img);
-              mysqli_stmt_close($stmt_img);
-              echo("<br>passed");
-            }
-            else {
-              $_SESSION['error']['unable_upload'] = "fail to move uploaded file<br>" ;
-              echo($_SESSION['error']['unable_upload']);
-              // redirect("register-screen.php");
-            }
-          }
-        }//end if
+        $queryCreateUser = 'INSERT INTO Customer (username,first_name,last_name,pw, email, address,city,state,zip,card_number,card_password) Values (?,?,?,?,?,?,?,?,?,?,?)';
+        $stmtCreateUser = mysqli_prepare($connection,$queryCreateUser);
+        echo("<p>Query is: ".' '.' '.$usernameEntered.' '.$firstnameEntered.' '.$lastnameEntered.' '.$passwordEntered.' '.$emailEntered.' '.$addressEntered.' '.$cityEntered.' '.$stateEntered.' '.$postcodeEntered.' '.$cardnumEntered.' '.$cardpassEntered);
+        mysqli_stmt_bind_param($stmtCreateUser,'sssssssssss',$usernameEntered,$firstnameEntered,$lastnameEntered,$passwordEntered,$emailEntered,$addressEntered,$cityEntered,$stateEntered,$postcodeEntered,$cardnumEntered,$cardpassEntered);
+        mysqli_stmt_execute($stmtCreateUser);
+        echo("<br>rows inserted: ".mysqli_stmt_affected_rows($stmtCreateUser));
+        mysqli_stmt_close($stmtCreateUser);
+        $printMsg = 'an account for the user '.$firstnameEntered.' has been created';
+        echo($printMsg);
+
         //upload BLOB
-        //
-        // $path= "uploads/" . basename($_FILES["userImage"]["name"]);
-        // $imageFileType = strtolower(pathinfo($path,PATHINFO_EXTENSION));
-        // $imagedata = file_get_contents($path);
-        // //store the contents of the files in memory in preparation for upload
-        // $sql = "update Customer set userImage = ?, userImageType = ? where username=?";
-        //
-        // $stmtBLOB = mysqli_stmt_init($connection); //init prepared statement object
-        // mysqli_stmt_prepare($stmtBLOB, $sql); // register the query
-        // $null = NULL;
-        // mysqli_stmt_bind_param($stmtBLOB, "bss", $null, $imageFileType,$usernameEntered);
-        //
-        // mysqli_stmt_send_long_data($stmtBLOB, 0, $imagedata);
-        //
-        // $resultBLOB = mysqli_stmt_execute($stmtBLOB) or die(mysqli_stmt_error($stmtBLOB));
-        // // run the statement
-        // mysqli_stmt_close($stmtBLOB); // and dispose of the statement.
+
+        $path= "uploads/" . basename($_FILES["userImage"]["name"]);
+        $imageFileType = strtolower(pathinfo($path,PATHINFO_EXTENSION));
+        $imagedata = file_get_contents($path);
+        //store the contents of the files in memory in preparation for upload
+        $sql = "update Customer set userImage = ?, userImageType = ? where username=?";
+
+        $stmtBLOB = mysqli_stmt_init($connection); //init prepared statement object
+        mysqli_stmt_prepare($stmtBLOB, $sql); // register the query
+        $null = NULL;
+        mysqli_stmt_bind_param($stmtBLOB, "bss", $null, $imageFileType,$usernameEntered);
+
+        mysqli_stmt_send_long_data($stmtBLOB, 0, $imagedata);
+
+        $resultBLOB = mysqli_stmt_execute($stmtBLOB) or die(mysqli_stmt_error($stmtBLOB));
+        // run the statement
+        mysqli_stmt_close($stmtBLOB); // and dispose of the statement.
 
         if(isset($_SESSION['error'])){
             $_SESSION['error'] = null;
         }
         $_SESSION['username'] = $usernameEntered;
-        // redirect("main-page.php");
+        redirect("main-page.php");
     }
 
 }

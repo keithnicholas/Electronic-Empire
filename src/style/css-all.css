@@ -1,6 +1,4 @@
-h1,h2,h3{
-    color:#414159;
-}
+
 
 body{
     /* max-width: 80%; */
@@ -40,9 +38,6 @@ h1, h2,h3,nav,footer{
     overflow:auto;
 
 }
-h3#cate-ls{
-    color:white;
-}
 #category-bar a{
     font-size:1em;
     display: block;
@@ -79,11 +74,4 @@ h3#cate-ls{
   margin-left:auto;
   margin-right:auto;
   color: white;
-}
-.button-edit-each-comment,.button-remove-each-comment{
-    background-color:#414159;
-    color:white;
-    border:none;
-    margin-top:.25em;
-    padding:.35em .65em;
 }

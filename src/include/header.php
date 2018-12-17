@@ -12,7 +12,7 @@ if(isset($_SESSION['username'])){
 <header class="masthead">
         <div class="entry-header"><!--change p to div -->
             <nav class="navbar">
-                <a href="main-page.php">Home</a>
+                <a href="main-page.php">HOME</a>
                 <!-- <p> -->
                     <form id="input-form" method="GET" action="itemList.php">
                         <input type="search" size="30" name="search_query" id = "search_query"placeholder="What are you looking for?">
@@ -34,11 +34,11 @@ if(isset($_SESSION['username'])){
                             //echo("<a href=\"user-view.php\">USER INFO</a>");
                         }
                         else {
-                          echo("<a href =\"add-item-admin.php\">Add Item</a>");
-                          echo("<a href =\"edit-item-admin.php\">Edit Item</a>");
-                          echo "<a href=\"logout.php\">Log Out</a>";
-                          echo("<a href =\"admin-user-control.php\">Control</a>");
-                          echo("<a href =\"admin-main.php\">Admin Center</a>");
+                          echo("<a href =\"add-item-admin.php\">ADD ITEM</a>");
+                          echo("<a href =\"edit-item-admin.php\">EDIT ITEM</a>");
+                          echo "<a href=\"logout.php\">LOG OUT</a>";
+                          echo("<a href =\"admin-user-control.php\">CONTROL CENTER</a>");
+                          echo("<a href =\"admin-main.php\">ADMIN MAIN</a>");
                         }
 
                     ?>

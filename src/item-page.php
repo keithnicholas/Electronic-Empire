@@ -50,7 +50,7 @@
             "</h2><figure><img src=\"".$path."\" alt=product></figure>");
             echo("<div id=container-description-price><p id=description-itempage>"
             .$desc."</p><p id=price-itempage>Price: $".$price."</p></div>");
-            if(isset($_SESSION['username']) && isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 0){//only customers have access to add-to-cart button
+            if(isset($_SESSION['username'])){
                 echo("<button class=btn-item-page id=btn-item-page-addcart name=btn-item-page-addcart>Add to Cart</button>");
             }
 
@@ -68,8 +68,8 @@
             // mysqli_stmt_free_result($stmt);
             // mysqli_stmt_close($stmt);
             // action=process-comment.php
-            if(isset($_SESSION['username']) && isset($_SESSION['active']) && $_SESSION['active']==1 ) {//user is logged in and comment enabled
-              echo("<div id=\"ur-comment\"><p id=\"write-ur-comment\">Write comments for this product</p>");
+            if(isset($_SESSION['username']) && isset($_SESSION['active']) && $_SESSION['active']==1) {//user is logged in and comment enabled
+              echo("<div id=\"ur-comment\"><p id=\"write-ur-comment\">Write your comment</p>");
               echo("<form id=\"ur-comment-form\" method=POST action=\"process-insert-comment.php\">
               <input type=textarea name=\"ur-comment-textarea\" id=\"ur-comment-textarea\" row=6 cols=70>
               <input class=btn-item-page type=submit name=submit value=submit id=sub>
@@ -77,14 +77,14 @@
               //TODO: change the style of button in css-all for btn?
             }
             else if (isset($_SESSION['username']) && isset($_SESSION['active']) && $_SESSION['active']==0){//comment disabled
-              echo("<div id=ur-comment><p id=write-ur-comment>Write comments for this product</p>");
+              echo("<div id=ur-comment><p id=write-ur-comment>Write your comment</p>");
               echo("<form id=ur-comment-form>
               <input type=textarea name=ur-comment-textarea row=6 cols=70
               value='Banned from Admin' disabled>
               <input class=btn-item-page type=submit name=submit value=submit disabled></form></div>");
             }
             else{//comment disabled
-              echo("<div id=ur-comment><p id=write-ur-comment>Write comments for this product</p>");
+              echo("<div id=ur-comment><p id=write-ur-comment>Write your comment</p>");
               echo("<form id=ur-comment-form>
               <input type=textarea name=ur-comment-textarea row=6 cols=70
               value='You have to log in to comment this product.' disabled>
@@ -93,9 +93,6 @@
             echo("</article></main>");//close main
           }
           mysqli_close($con);
-
-
-
   ?>
   <?php include 'include/footer.php' ?>
 </body>

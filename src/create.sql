@@ -20,9 +20,8 @@ CREATE TABLE Customer(
     zip VARCHAR(10)  NOT NULL,
     card_number VARCHAR(17),
     card_password VARCHAR(10),
-    -- userImage longblob,
-    -- userImageType VARCHAR(50),
-    p_img_path VARCHAR(255),
+    userImage longblob,
+    userImageType VARCHAR(50),
     active INT DEFAULT 1,
     isAdmin INT DEFAULT 0,
     -- mediumblob
@@ -210,9 +209,9 @@ UPDATE Product SET p_img_path = "images/Sony_TV.png" WHERE pid = 8;
 UPDATE Product SET p_img_path = "images/Keyboard.png" WHERE pid = 9;
 UPDATE Product SET p_img_path = "images/mouse.png" WHERE pid = 10;
 
-UPDATE Customer SET isAdmin = 1, p_img_path = "uploads/zelda.png" WHERE username = 'Admin';
-UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'OJ';
-UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'JL';
-UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'WD';
-UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'OR';
-UPDATE Customer SET p_img_path = "uploads/zelda.png" WHERE username = 'EA';
+UPDATE Customer SET isAdmin = 1 WHERE username = 'Admin';
+-- UPDATE Customer SET userImage = "images/zelda.jpg" WHERE username = 'OJ';
+-- UPDATE Customer SET userImage = "images/zelda.jpg" WHERE username = 'JL';
+-- UPDATE Customer SET userImage = "images/zelda.jpg" WHERE username = 'WD';
+-- UPDATE Customer SET userImage = "images/zelda.jpg" WHERE username = 'OR';
+-- UPDATE Customer SET userImage = "images/zelda.jpg" WHERE username = 'EA';

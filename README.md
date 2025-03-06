@@ -1,1 +1,2 @@
-My first full stack project done in PHP,JS and CSS
+full stack project
+Tech stack: PHP,JS and CSS
